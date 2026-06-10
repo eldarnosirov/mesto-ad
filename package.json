@@ -1,0 +1,13 @@
+{
+  "name": "mesto",
+  "version": "1.0.0",
+  "description": "Итоговая проектная работа от Яндекс Практикум",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^8.0.8"
+  }
+}
