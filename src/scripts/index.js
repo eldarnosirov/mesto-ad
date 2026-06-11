@@ -99,16 +99,6 @@ const handlePreviewPicture = ({ name, link }) => {
   openModalWindow(imageModalWindow);
 };
 
-const setButtonLoading = (button, isLoading, defaultText, loadingText) => {
-  if (isLoading) {
-    button.textContent = loadingText;
-    button.disabled = true;
-  } else {
-    button.textContent = defaultText;
-    button.disabled = false;
-  }
-};
-
 const openRemoveCardModal = (cardId, cardElement) => {
   cardToDeleteId = cardId;
   cardToDeleteElement = cardElement;
@@ -156,11 +146,8 @@ const handleInfoClick = async (cardId) => {
 
 const handleProfileFormSubmit = async (evt) => {
   evt.preventDefault();
-  const submitButton = profileForm.querySelector(".popup__button");
-  const defaultText = submitButton.textContent;
-
-  setButtonLoading(submitButton, true, defaultText, "Сохранение...");
-
+  // Кнопка управляется через валидацию, ручное блокирование убрано
+  
   try {
     const userData = await setUserInfo({
       name: profileTitleInput.value,
@@ -172,38 +159,27 @@ const handleProfileFormSubmit = async (evt) => {
     closeModalWindow(profileFormModalWindow);
   } catch (err) {
     console.error("Ошибка при обновлении профиля:", err);
-  } finally {
-    setButtonLoading(submitButton, false, defaultText, "Сохранение...");
   }
 };
 
 const handleAvatarFormSubmit = async (evt) => {
   evt.preventDefault();
-  const submitButton = avatarForm.querySelector(".popup__button");
-  const defaultText = submitButton.textContent;
-
-  setButtonLoading(submitButton, true, defaultText, "Сохранение...");
-
+  // Кнопка управляется через валидацию, ручное блокирование убрано
+  
   try {
     const userData = await setUserAvatar(avatarInput.value);
     profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
     closeModalWindow(avatarFormModalWindow);
-    avatarForm.reset();
-    clearValidation(avatarForm, validationSettings);
+    // Сброс формы и валидации перенесен в обработчик открытия попапа
   } catch (err) {
     console.error("Ошибка при обновлении аватара:", err);
-  } finally {
-    setButtonLoading(submitButton, false, defaultText, "Сохранение...");
   }
 };
 
 const handleCardFormSubmit = async (evt) => {
   evt.preventDefault();
-  const submitButton = cardForm.querySelector(".popup__button");
-  const defaultText = submitButton.textContent;
-
-  setButtonLoading(submitButton, true, defaultText, "Создание...");
-
+  // Кнопка управляется через валидацию, ручное блокирование убрано
+  
   try {
     const newCard = await addCard({
       name: cardNameInput.value,
@@ -225,22 +201,16 @@ const handleCardFormSubmit = async (evt) => {
     placesWrap.prepend(newCardElement);
     
     closeModalWindow(cardFormModalWindow);
-    cardForm.reset();
-    clearValidation(cardForm, validationSettings);
+    // Сброс формы и валидации перенесен в обработчик открытия попапа
   } catch (err) {
     console.error("Ошибка при добавлении карточки:", err);
-  } finally {
-    setButtonLoading(submitButton, false, defaultText, "Создание...");
   }
 };
 
 const handleRemoveCardSubmit = async (evt) => {
   evt.preventDefault();
-  const submitButton = removeCardForm.querySelector(".popup__button");
-  const defaultText = submitButton.textContent;
-
-  setButtonLoading(submitButton, true, defaultText, "Удаление...");
-
+  // Кнопка управляется через валидацию, ручное блокирование убрано
+  
   try {
     await deleteCard(cardToDeleteId, cardToDeleteElement, deleteCardFromServer);
     closeModalWindow(removeCardModalWindow);
@@ -248,8 +218,6 @@ const handleRemoveCardSubmit = async (evt) => {
     cardToDeleteElement = null;
   } catch (err) {
     console.error("Ошибка при удалении карточки:", err);
-  } finally {
-    setButtonLoading(submitButton, false, defaultText, "Удаление...");
   }
 };
 
