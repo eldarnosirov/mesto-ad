@@ -146,8 +146,12 @@ const handleInfoClick = async (cardId) => {
 
 const handleProfileFormSubmit = async (evt) => {
   evt.preventDefault();
-  // Кнопка управляется через валидацию, ручное блокирование убрано
+  const submitButton = profileForm.querySelector(".popup__button");
+  const defaultText = submitButton.textContent;
   
+  // Меняем только текст, disabled управляется валидацией
+  submitButton.textContent = "Сохранение...";
+
   try {
     const userData = await setUserInfo({
       name: profileTitleInput.value,
@@ -159,27 +163,37 @@ const handleProfileFormSubmit = async (evt) => {
     closeModalWindow(profileFormModalWindow);
   } catch (err) {
     console.error("Ошибка при обновлении профиля:", err);
+  } finally {
+    // Возвращаем исходный текст после завершения запроса
+    submitButton.textContent = defaultText;
   }
 };
 
 const handleAvatarFormSubmit = async (evt) => {
   evt.preventDefault();
-  // Кнопка управляется через валидацию, ручное блокирование убрано
+  const submitButton = avatarForm.querySelector(".popup__button");
+  const defaultText = submitButton.textContent;
   
+  submitButton.textContent = "Сохранение...";
+
   try {
     const userData = await setUserAvatar(avatarInput.value);
     profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
     closeModalWindow(avatarFormModalWindow);
-    // Сброс формы и валидации перенесен в обработчик открытия попапа
   } catch (err) {
     console.error("Ошибка при обновлении аватара:", err);
+  } finally {
+    submitButton.textContent = defaultText;
   }
 };
 
 const handleCardFormSubmit = async (evt) => {
   evt.preventDefault();
-  // Кнопка управляется через валидацию, ручное блокирование убрано
+  const submitButton = cardForm.querySelector(".popup__button");
+  const defaultText = submitButton.textContent;
   
+  submitButton.textContent = "Создание...";
+
   try {
     const newCard = await addCard({
       name: cardNameInput.value,
@@ -201,16 +215,20 @@ const handleCardFormSubmit = async (evt) => {
     placesWrap.prepend(newCardElement);
     
     closeModalWindow(cardFormModalWindow);
-    // Сброс формы и валидации перенесен в обработчик открытия попапа
   } catch (err) {
     console.error("Ошибка при добавлении карточки:", err);
+  } finally {
+    submitButton.textContent = defaultText;
   }
 };
 
 const handleRemoveCardSubmit = async (evt) => {
   evt.preventDefault();
-  // Кнопка управляется через валидацию, ручное блокирование убрано
+  const submitButton = removeCardForm.querySelector(".popup__button");
+  const defaultText = submitButton.textContent;
   
+  submitButton.textContent = "Удаление...";
+
   try {
     await deleteCard(cardToDeleteId, cardToDeleteElement, deleteCardFromServer);
     closeModalWindow(removeCardModalWindow);
@@ -218,6 +236,8 @@ const handleRemoveCardSubmit = async (evt) => {
     cardToDeleteElement = null;
   } catch (err) {
     console.error("Ошибка при удалении карточки:", err);
+  } finally {
+    submitButton.textContent = defaultText;
   }
 };
 
